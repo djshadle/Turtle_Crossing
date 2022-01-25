@@ -1,4 +1,5 @@
 from turtle import Turtle
+from scoreboard import Scoreboard
 import random
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
@@ -13,9 +14,7 @@ class CarManager(Turtle):
         self.shapesize(stretch_len=2)
         self.color(random.choice(COLORS))
         self.penup()
-        self.car_speed = STARTING_MOVE_DISTANCE
         self.setheading(180)
         self.goto(280, (random.randint(-250, 250)))
-
-    def speed_up(self):
-        self.car_speed += MOVE_INCREMENT
+        self.movement_start = STARTING_MOVE_DISTANCE
+        self.move_increment = MOVE_INCREMENT

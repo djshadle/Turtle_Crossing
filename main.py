@@ -8,6 +8,7 @@ from scoreboard import Scoreboard
 def exit_game():
     screen.bye()
 
+
 counter = 0
 cars = []
 screen = Screen()
@@ -34,7 +35,10 @@ while game_is_on:
     for car in cars:
         if car.xcor() < -310:
             cars.remove(car)
-        car.forward(car_manager.car_speed)
+        if scoreboard.score == 1:
+            car.forward(car_manager.movement_start)
+        else:
+            car.forward(car_manager.movement_start + (car_manager.move_increment * scoreboard.score))
 
         if player.distance(car) <= 25:
             player.car_crash()
@@ -45,6 +49,5 @@ while game_is_on:
         player.reached_end()
         scoreboard.score += 1
         scoreboard.update_score()
-        car_manager.speed_up()
 
 screen.exitonclick()
