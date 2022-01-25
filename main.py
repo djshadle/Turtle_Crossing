@@ -18,6 +18,7 @@ screen.listen()
 
 player = Player()
 scoreboard = Scoreboard()
+car_manager = CarManager()
 
 screen.onkeypress(player.move_up, "Up")
 screen.onkeypress(exit_game, "Escape")
@@ -26,28 +27,21 @@ game_is_on = True
 while game_is_on:
     time.sleep(0.1)
     screen.update()
-    counter += 1
+    car_manager.create_car()
 
-    if counter % 6 == 0:
-        car_manager = CarManager()
-        cars.append(car_manager)
-
-    for car in cars:
-        if car.xcor() < -310:
-            cars.remove(car)
-        if scoreboard.score == 1:
-            car.forward(car_manager.movement_start)
-        else:
-            car.forward(car_manager.movement_start + (car_manager.move_increment * scoreboard.score))
-
-        if player.distance(car) <= 25:
+    car_manager.movement()
+    car_manager.remove_car()
+    # Detect collision with player
+    for car in car_manager.all_cars:
+        if player.distance(car) <= 20:
             player.car_crash()
-            scoreboard.score = 1
-            scoreboard.update_score()
+            game_is_on = False
+            scoreboard.game_over()
 
-    if player.ycor() >= player.finish_line:
-        player.reached_end()
-        scoreboard.score += 1
-        scoreboard.update_score()
+    # Detect player at finish line
+        if player.reached_finish_line():
+            scoreboard.score += 1
+            scoreboard.update_score()
+            car_manager.level_up()
 
 screen.exitonclick()

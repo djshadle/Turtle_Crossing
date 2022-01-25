@@ -1,3 +1,4 @@
+import time
 from turtle import Turtle
 
 STARTING_POSITION = (0, -280)
@@ -11,14 +12,18 @@ class Player(Turtle):
         self.penup()
         self.setheading(90)
         self.shape("turtle")
-        self.finish_line = FINISH_LINE_Y
+        self.go_to_start()
+
+    def go_to_start(self):
         self.goto(STARTING_POSITION)
 
     def move_up(self):
         self.forward(MOVE_DISTANCE)
 
-    def reached_end(self):
-        self.goto(STARTING_POSITION)
+    def reached_finish_line(self):
+        if self.ycor() >= FINISH_LINE_Y:
+            self.go_to_start()
+            return True
 
     def car_crash(self):
         self.goto(STARTING_POSITION)
